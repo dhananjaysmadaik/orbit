@@ -130,7 +130,7 @@ function framing() {
 }
 function poseOf(id, phase) {
   const P = POSE[id], f = framing();
-  const base = globe ? globe.fitDist(isMobile() ? 0.5 : 0.82) : 3.4;
+  const base = globe ? globe.fitDist(isMobile() ? 0.74 : 0.82) : 3.4;
   let dist = P.dist ? P.dist * f.far : base;
   if (phase === 'end' && P.dist) dist *= 0.93;
   return { lat: P.lat, lon: P.lon, dist, tilt: P.tilt || 0, pitch: isMobile() ? (P.pitch || 0) * 0.5 : P.pitch || 0, spin: P.spin || 0, cx: id === 'contact' || id === 'orbit' ? (isMobile() ? 0.5 : 0.66) : f.cx, cy: f.cy };

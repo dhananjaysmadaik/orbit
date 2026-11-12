@@ -25,9 +25,13 @@ body.dragging #scene{cursor:grabbing}
 .in-dossier .stage{visibility:hidden}
 
 .markers{position:absolute;inset:0;pointer-events:none}
-.marker{position:absolute;left:0;top:0;display:flex;align-items:center;gap:.5rem;padding:0;margin:0;border:0;background:none;color:var(--ink);pointer-events:auto;transition:opacity .4s}
-.marker i{position:relative;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;background:var(--warm);box-shadow:0 0 0 3px rgba(233,201,160,.18)}
-.marker span{font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;transform:translateY(-4.5px);text-shadow:0 1px 6px rgba(0,0,0,.9);opacity:.75}
+.marker{position:absolute;left:0;top:0;width:0;height:0;padding:0;margin:0;border:0;background:none;color:var(--ink);pointer-events:auto;transition:opacity .4s}
+.marker::before{content:"";position:absolute;left:-14px;top:-14px;width:28px;height:28px}
+.marker i{position:absolute;left:-4.5px;top:-4.5px;width:9px;height:9px;border-radius:50%;background:var(--warm);box-shadow:0 0 0 3px rgba(233,201,160,.18)}
+.marker span{position:absolute;left:11px;top:-7px;font-family:var(--mono);font-size:.66rem;line-height:14px;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;text-shadow:0 1px 6px rgba(0,0,0,.9);opacity:.75}
+.marker[data-site="himachal"] span,.marker[data-site="cornwall"] span,.marker[data-site="valencia"] span{left:auto;right:11px}
+.marker[data-site="kinnaur"] span{top:4px}
+.marker[data-site="himachal"] span{top:-16px}
 .marker.is-active i{background:var(--sky);box-shadow:0 0 0 4px rgba(159,214,236,.2)}
 .marker.is-active i::after{content:"";position:absolute;inset:-12px;border:1px solid rgba(159,214,236,.65);border-radius:50%;animation:ping 2.4s var(--ease) infinite}
 .marker.is-active span{opacity:1;color:var(--sky)}
@@ -274,6 +278,9 @@ main{position:relative;z-index:2}
   .wordmark{font-size:1rem}
   .menu-toggle{margin-left:auto}
   .readout{display:none}
+  body[data-chapter="orbit"] .marker span,body[data-chapter="contact"] .marker span{display:none}
+  .ground-img::before{content:"";position:absolute;inset:0 0 auto;height:200px;z-index:1;background:linear-gradient(rgba(4,7,12,.85),transparent)}
+  .ground-cap{z-index:2}
   .hud{grid-template-columns:1fr;padding:0 10px env(safe-area-inset-bottom)}
   .hud .utils,.scroll-hint{display:none}
   .index-panel .utils{display:flex}

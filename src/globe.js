@@ -41,7 +41,7 @@ void main(){
   float diff=max(ndl,0.);
   vec3 col=albedo*(0.03+1.18*diff);
   vec3 H=normalize(uSun+V);
-  col+=vec3(1.,.95,.85)*pow(max(dot(n,H),0.),70.)*water*.5*day;
+  col+=vec3(1.,.95,.85)*pow(max(dot(n,H),0.),220.)*water*.32*day;
   float c=texture2D(tClouds,vec2(vUv.x+uCloudShift,vUv.y)).r*uCloudAmt*uHasClouds;
   float cs=texture2D(tClouds,vec2(vUv.x+uCloudShift+.004,vUv.y+.002)).r*uCloudAmt*uHasClouds;
   col*=1.-.3*cs*day;
@@ -71,7 +71,7 @@ void main(){
     } else if(uScanMode==2){
       float h=texture2D(tHeight,vUv).r;
       fc=ramp3(vec3(.2,.42,.25),vec3(.78,.66,.42),vec3(.98,.97,.95),smoothstep(.02,.72,h));
-      fc*=clamp(.62+nm.x*1.7-nm.y*1.7,0.,1.45);
+      fc*=clamp(.8+nm.x*.8-nm.y*.8,.45,1.25);
       fc=mix(fc,vec3(.08,.16,.3),water);
     } else if(uScanMode==3){
       vec2 cell=vec2(1440.,720.); vec2 q=(floor(vUv*cell)+.5)/cell;
