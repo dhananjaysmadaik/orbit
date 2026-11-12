@@ -145,6 +145,10 @@
 
   /* ---------- email (assembled here so plain-text scrapers miss it) ---------- */
   var addr=['dhananjaysmadaik','gmail.com'].join('@');
+  /* "request by email" buttons for reports shared on request */
+  $$('[data-request]').forEach(function(a){
+    a.href='mailto:'+addr+'?subject='+encodeURIComponent('Request: '+a.getAttribute('data-request'))+'&body='+encodeURIComponent('Hello Dhananjay,\n\nCould you share the '+a.getAttribute('data-request')+'?\n\nThank you,\n');
+  });
   $$('[data-mail]').forEach(function(el){
     if(el.tagName==='A'){el.href='mailto:'+addr} else {el.textContent=addr}
   });

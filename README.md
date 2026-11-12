@@ -17,4 +17,5 @@ Live: https://dhananjaysmadaik.github.io/orbit/ · Classic version: https://dhan
 
 Maps, figures and photographs are my own unless credited. Globe imagery: NASA Blue Marble and Black Marble
 (NASA Earth Observatory) via the three-globe project (MIT). Coastlines: Natural Earth. 3D: three.js (MIT).
-Fonts: Fraunces, Instrument Sans, IBM Plex Mono (SIL Open Font License). Satellite scan effects are illustrative.
+Fonts: Fraunces, Instrument Sans, IBM Plex Mono (SIL Open Font License). Satellite scan effects are illustrative. Place photographs in the journey are free-licence images used for illustration.
+The full MSc dissertation is shared on request; `reports/` holds a two-page public summary.

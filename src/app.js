@@ -156,7 +156,8 @@ function cameraFor(i, p) {
     const bump = Math.min(1.5, angBetween(prev, arrive) * 1.1) * (isMobile() ? 1.2 : 1);
     return blendPose(prev, arrive, tIn, bump);
   }
-  return blendPose(arrive, end, smooth(0.3, 1, p), 0);
+  // after arriving the camera dives a little further as the photograph of the place resolves
+  return blendPose(arrive, end, smooth(0.28, 0.4, p), 0);
 }
 
 // ---------------- HUD ----------------
@@ -179,14 +180,28 @@ function setActive(i) {
   }
   roScan.textContent = 'Satellite idle';
   body.dataset.chapter = DATA[i].id;
+  preloadPhoto(i); preloadPhoto(i + 1); if (i > 0) preloadPhoto(i - 1);
   if (prevActive >= 0) sfx('whoosh', 1.6, 220, 1400, 0.14);
+}
+
+// place photographs load just ahead of need; a chapter only switches to its photo once it has decoded
+function preloadPhoto(i) {
+  const ch = chapters[i]; if (!ch || ch._loading) return;
+  const img = ch.querySelector('.ground-img img'); if (!img) return;
+  ch._loading = true;
+  const done = () => { ch._ready = true; ch.querySelector('.ground-img').classList.add('is-loaded'); dirty = true; requestAnimationFrame(update); };
+  img.addEventListener('load', () => { (img.decode ? img.decode() : Promise.resolve()).catch(() => {}).then(done); }, { once: true });
+  img.addEventListener('error', () => { ch._loading = false; }, { once: true });
+  img.sizes = '100vw'; img.srcset = img.dataset.srcset; img.src = img.dataset.src;
 }
 
 function phaseOf(i, p) {
   const ch = chapters[i];
   if (i === 0 || i === N - 1) return 'intro';
   const hasGround = ch.hasAttribute('data-ground');
-  if (hasGround) return p < 0.36 ? 'intro' : p < 0.6 ? 'ground' : 'work';
+  if (hasGround && !ch._ready) return p < 0.5 ? 'intro' : 'work';
+  if (ch.hasAttribute('data-radar')) return p < 0.3 ? 'intro' : p < 0.5 ? 'ground' : p < 0.7 ? 'radar' : 'work';
+  if (hasGround) return p < 0.32 ? 'intro' : p < 0.6 ? 'ground' : 'work';
   return p < 0.48 ? 'intro' : 'work';
 }
 
@@ -204,7 +219,8 @@ function update() {
   const total = (tops[N - 1] + heights[N - 1] - vh) || 1;
   fill.style.transform = `scaleX(${clamp(y / total, 0, 1)})`;
   // dim the globe behind full-bleed ground imagery
-  const ground = ch.hasAttribute('data-ground') ? smooth(0.3, 0.38, p) * (1 - smooth(0.62, 0.72, p)) : 0;
+  const radar = ch.hasAttribute('data-radar');
+  const ground = ch.hasAttribute('data-ground') && ch._ready ? smooth(0.29, 0.34, p) * (1 - smooth(radar ? 0.7 : 0.6, radar ? 0.76 : 0.66, p)) : 0;
   const workDim = i > 0 && i < N - 1 ? smooth(0.5, 0.7, p) * (isMobile() ? 0.25 : 0.12) : 0;
   veil.style.opacity = String(Math.max(ground * 0.9, workDim));
   body.classList.toggle('is-ground', ground > 0.5);

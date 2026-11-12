@@ -59,30 +59,33 @@ CHAPTERS = [
     dict(id='himachal', short='Himachal Pradesh', place='Himachal Pradesh, India', case='ndvi',
          cat='Landsat time series', date='Jan 2026',
          title='Two decades of <em>vegetation loss and recovery.</em>',
-         figs=['n-period', 'n-hotspots', 'n-study'], scan='NDVI change', ground=None),
+         figs=['n-period', 'n-hotspots', 'n-study'], scan='NDVI change',
+         photo=dict(name='Himachal Pradesh', alt='Snow-capped peaks above a high mountain lake in Himachal Pradesh.', pos='62% 50%')),
     dict(id='kinnaur', short='Kinnaur', place='NH-5 Satluj corridor, Kinnaur', case='landslide',
          cat='MSc dissertation', date='Sep 2026',
          title='179 landslides along <em>one Himalayan highway.</em>',
          figs=['l-suscept', 'l-inventory', 'l-study'], scan='Terrain and slope',
-         ground=dict(img='assets/scenes/kinnaur.webp', w=1920, h=1246, cap=None, key='l-photos')),
+         photo=dict(name='Kinnaur', alt='A glacial river running through a forested Himalayan valley below rocky peaks.', pos='58% 50%')),
     dict(id='rome', short='Rome', place='Italy and Vatican City', case='python',
          cat='Python', date='Nov 2025 – Jan 2026',
          title='The world’s shortest border, <em>found in code.</em>',
-         figs=['b-map', 't-final', 't-raw'], scan='Geodesic distance', ground=None),
+         figs=['b-map', 't-final', 't-raw'], scan='Geodesic distance',
+         photo=dict(name='Vatican City', alt='St Peter’s Square and Rome seen from above.', pos='50% 70%')),
     dict(id='valencia', short='Valencia', place='Valencia Province, Spain', case='valencia',
          cat='SAR flood mapping', date='Jun 2026',
          title='Mapping a flood <em>through the cloud.</em>',
-         figs=['s-compare', 's-cems', 's-post'], scan='Radar backscatter',
-         ground=dict(slider=True)),
+         figs=['s-compare', 's-cems', 's-post'], scan='Radar backscatter', radar=True,
+         photo=dict(name='Valencia', alt='Aerial view of a Mediterranean beach and seafront in Spain.', pos='50% 60%')),
     dict(id='cornwall', short='Cornwall', place='Cornwall, United Kingdom', case='uav',
          cat='UAV survey', date='Jan 2026',
          title='Do beavers reshape <em>the canopy?</em>',
          figs=['u-w1', 'u-top1', 'u-felling'], scan='UAV orthomosaic',
-         ground=dict(img='assets/scenes/cornwall.webp', w=1920, h=1113, key='u-w1')),
+         photo=dict(name='Cornwall', alt='Cattle grazing on green fields with hedgerows and autumn trees in Cornwall.', pos='64% 45%')),
     dict(id='manchester', short='Manchester', place='Greater Manchester, UK', case=['greenspace', 'westgorton'],
          cat='Suitability modelling · Research placement', date='Jan – Apr 2026',
          title='Evidence for <em>greener, fairer streets.</em>',
-         figs=['g-classified', 'p-mobility', 'g-priority'], scan='Census mosaic', ground=None),
+         figs=['g-classified', 'p-mobility', 'g-priority'], scan='Census mosaic',
+         photo=dict(name='Manchester', alt='Manchester city centre skyline at sunset.', pos='56% 50%')),
     dict(id='contact', short='Contact', place='Manchester, United Kingdom', kind='outro'),
 ]
 
@@ -122,8 +125,8 @@ def chapter_html(i, ch):
         <li><b>2</b><span>woodlands surveyed by UAV, Cornwall</span></li>
         <li><b>12</b><span>LSOAs harmonised for a Manchester park study</span></li>
       </ul>
+      <p class="hint label" aria-hidden="true"><span class="hint-drag">Drag the Earth to turn it</span><span class="hint-sat">Click the satellite to scan</span></p>
     </div>
-    <p class="hint label" aria-hidden="true"><span class="hint-drag">Drag the Earth to turn it</span><span class="hint-sat">Click the satellite to scan</span></p>
   </div>
 </section>'''
     if ch.get('kind') == 'outro':
@@ -150,31 +153,36 @@ def chapter_html(i, ch):
         f'<a class="btn btn-primary" href="#{c}" data-case="{c}">{"Read the case study" if len(cases) == 1 else escape(short)} {ARROW}</a>'
         for c, short in zip(cases, ['Green space case study', 'West Gorton case study']))
     if ch['id'] == 'kinnaur':
-        btns += f'<a class="btn btn-ghost" href="reports/dissertation-landslide-kinnaur.pdf" target="_blank" rel="noopener noreferrer">Dissertation (PDF)</a>'
+        btns += f'<a class="btn btn-ghost" href="reports/dissertation-summary-landslide-kinnaur.pdf" target="_blank" rel="noopener noreferrer">Summary (PDF)</a>'
+        btns += f'<a class="btn btn-ghost" href="#contact" data-request="Full MSc dissertation (NH-5 landslides, Kinnaur)">Request full dissertation</a>'
     figs = ''.join(fig(k) for k in ch['figs'])
-    ground = ''
-    g = ch.get('ground')
-    if g and g.get('slider'):
-        ground = f'''
+    ph = ch['photo']
+    pid = ch['id']
+    ground = f'''
+    <div class="ground ground-img" data-photo="{pid}">
+      <img data-src="assets/places/{pid}-2048.webp" data-srcset="assets/places/{pid}-1200.webp 1200w, assets/places/{pid}-2048.webp 2048w" sizes="100vw" alt="{escape(ph['alt'])}" style="object-position:{ph['pos']}" decoding="async">
+      <div class="place" aria-hidden="true">
+        <p class="label place-k"><span>{n}</span>{coord}</p>
+        <p class="place-name">{escape(ph['name'])}</p>
+      </div>
+      <p class="ground-cap label">Photograph · free licence</p>
+    </div>'''
+    if ch.get('radar'):
+        ground += '''
     <div class="ground ground-sar" aria-label="Before and after radar comparison">
       <div class="sar" id="sar">
-        <img src="assets/scenes/valencia-pre.webp" width="1006" height="614" alt="Sentinel-1 VH backscatter over Valencia before the flood, 19 October 2024." loading="lazy" decoding="async">
-        <div class="sar-after" id="sar-after"><img src="assets/scenes/valencia-post.webp" width="1006" height="614" alt="Sentinel-1 VH backscatter after the flood, 31 October 2024. Dark areas show standing water." loading="lazy" decoding="async"></div>
+        <img src="assets/scenes/valencia-pre.webp" width="1006" height="614" alt="Sentinel-1 VH backscatter over Valencia before the flood, 19 October 2024." decoding="async">
+        <div class="sar-after" id="sar-after"><img src="assets/scenes/valencia-post.webp" width="1006" height="614" alt="Sentinel-1 VH backscatter after the flood, 31 October 2024. Dark areas show standing water." decoding="async"></div>
         <span class="sar-tag l label">Before · 19 Oct 2024</span><span class="sar-tag r label">After · 31 Oct 2024</span>
         <div class="sar-handle" aria-hidden="true"></div>
         <input class="sar-range" id="sar-range" type="range" min="0" max="100" value="50" aria-label="Drag to compare radar images before and after the flood">
       </div>
-      <p class="ground-cap label">Sentinel-1 VH backscatter, before and after. Contains modified Copernicus Sentinel data (2024).</p>
+      <p class="label sar-cap">Sentinel-1 VH backscatter, before and after. Contains modified Copernicus Sentinel data (2024).</p>
     </div>'''
-    elif g:
-        cap = caption_of(g['key'])
-        ground = f'''
-    <div class="ground ground-img" aria-hidden="true"><img src="{g['img']}" width="{g['w']}" height="{g['h']}" alt="" loading="lazy" decoding="async"></div>
-    <p class="ground-cap label">{cap}</p>'''
     head = f'<p class="kicker"><span class="num">{n}</span><span>{escape(ch["place"])}</span><span class="coord">{coord}</span></p>'
     title_attr = escape(CASE_TITLE[cases[0]])
     return f'''
-<section {attrs} aria-labelledby="t-{ch["id"]}"{' data-ground="1"' if g else ''}>
+<section {attrs} aria-labelledby="t-{ch["id"]}" data-ground="1"{' data-radar="1"' if ch.get('radar') else ''}>
   <div class="pane">{ground}
     <div class="panel">
       {head}
@@ -201,7 +209,24 @@ def nav_items():
     return ''.join(out)
 
 
+MAIL_SVG = '<svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="m3.5 6 8.5 7 8.5-7"/></svg>'
+
+
+def patch_cases(c):
+    old = re.search(r'<a class="btn btn-primary btn-sm" href="reports/dissertation-landslide-kinnaur.pdf"[^>]*>Read the dissertation \(PDF, 5 MB\) (<svg.*?</svg>)</a>', c, re.S)
+    new = (f'<a class="btn btn-primary btn-sm" href="reports/dissertation-summary-landslide-kinnaur.pdf" rel="noopener noreferrer" target="_blank">Read the 2-page summary (PDF) {old.group(1)}</a>'
+           f' <a class="btn btn-ghost btn-sm" href="#contact" data-request="Full MSc dissertation (NH-5 landslides, Kinnaur)">Request the full dissertation {MAIL_SVG}</a>')
+    c = c.replace(old.group(0), new)
+    assert 'dissertation-landslide-kinnaur.pdf' not in c
+    for txt, what in [('The full placement report was written for the research team and is available on request.', 'West Gorton placement report'),
+                      ('The A1 poster is available on request.', 'Valencia flood mapping poster')]:
+        assert txt in c
+        c = c.replace(txt + '</p>', txt + f'</p><a class="btn btn-ghost btn-sm" href="#contact" data-request="{what}">Request by email {MAIL_SVG}</a>')
+    return c
+
+
 def build(target='github'):
+    F['cases'] = patch_cases(F['cases'])
     chapters = ''.join(chapter_html(i, c) for i, c in enumerate(CHAPTERS))
     ticks = ''.join(
         f'<a class="tick" href="#ch-{c["id"]}" data-jump="{i}" aria-label="Chapter {i + 1:02d}: {escape(c["short"])}"><span>{i + 1:02d}</span><i>{escape(c["short"])}</i></a>'
@@ -365,7 +390,7 @@ def build(target='github'):
       <nav aria-label="Footer"><ul><li><a href="#work">Work</a></li><li><a href="#experience">Experience</a></li><li><a href="#toolkit">Toolkit</a></li><li><a href="#about">About</a></li><li><a href="#contact" data-jump="7">Contact</a></li><li><a href="https://www.linkedin.com/in/dhananjaysinghmadaik/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li><li><a href="https://github.com/dhananjaysmadaik" target="_blank" rel="noopener noreferrer">GitHub</a></li><li><a href="https://dhananjaysmadaik.github.io/" target="_blank" rel="noopener noreferrer">Classic site</a></li></ul></nav>
     </div>
     <div class="attrib">{F['attrib']}
-      <p>Globe imagery: NASA Blue Marble and Black Marble (NASA Earth Observatory), via the three-globe project. Coastlines: Natural Earth. The satellite scans are illustrative visual effects, not data products. Built with three.js.</p>
+      <p>Globe imagery: NASA Blue Marble and Black Marble (NASA Earth Observatory), via the three-globe project. Coastlines: Natural Earth. The satellite scans are illustrative visual effects, not data products. Place photographs in the journey are used for illustration under free licences. Built with three.js.</p>
       <p>© <span id="year">2026</span> Dhananjay Singh Madaik. Manchester, United Kingdom.</p>
     </div>
   </div>
