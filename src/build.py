@@ -114,7 +114,7 @@ def chapter_html(i, ch):
     <div class="panel">
       <p class="kicker"><span class="num">{n}</span><span>GIS · Earth observation · UAV survey · Manchester, UK</span></p>
       <h1 class="display" id="hero-title">Reading the land from <em>orbit, air and ground.</em></h1>
-      <p class="lead">I’m Dhananjay Singh Madaik, an MSc Geographical Information Science graduate from the University of Manchester with a forestry degree behind me. I map landslides, track vegetation change from satellites, survey woodland by drone and turn census data into evidence people can act on.</p>
+      <p class="lead">I’m Dhananjay Singh Madaik, an MSc Geographical Information Science graduate from the University of Manchester with a forestry degree behind me. I map landslides, track vegetation change from satellites, survey woodland by drone and turn census data into evidence people can act on. Most of it comes back to environmental and planning questions: unstable slopes above a highway, neighbourhoods short of green space, and forests and rivers changing around where people live and travel.</p>
       <div class="ctas">
         <a class="btn btn-primary" href="#ch-himachal" data-jump="1">Begin the journey {DOWN}</a>
         <a class="btn btn-ghost" href="#work">Project archive</a>
@@ -299,7 +299,7 @@ def build(target='github'):
     <div>
       <p class="label">Archive</p>
       <ul class="index-list small">
-        <li><a href="#work">All seven projects</a></li>
+        <li><a href="#work">All eight projects</a></li>
         <li><a href="#experience">Experience</a></li>
         <li><a href="#toolkit">Toolkit</a></li>
         <li><a href="#about">About</a></li>
@@ -340,11 +340,11 @@ def build(target='github'):
   <div class="wrap">
     <div class="sec-head">
       <p class="label">Project archive</p>
-      <h2 class="h2" id="work-title">Seven projects, <em>from Himalayan slopes to Manchester streets.</em></h2>
+      <h2 class="h2" id="work-title">Eight projects, <em>from Himalayan slopes to Manchester streets.</em></h2>
       <p class="lead">Each case study sets out the question, the data, what I did, what I found and the limits, with every map at full size.</p>
     </div>
     {F['filters']}
-    <p class="label count" id="work-count" aria-live="polite">Showing 7 projects</p>
+    <p class="label count" id="work-count" aria-live="polite">Showing 8 projects</p>
     {F['featured']}
     {F['grid']}
     <p class="empty" id="work-empty" hidden>No projects match this filter.</p>
