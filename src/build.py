@@ -135,7 +135,7 @@ def chapter_html(i, ch):
   <div class="pane">
     <div class="panel" id="contact">
       <p class="kicker"><span class="num">{n}</span><span>Contact</span><span>{coord}</span></p>
-      <h2 class="h2" id="contact-title">Looking for graduate roles in <em>GIS, remote sensing and survey.</em></h2>
+      <h2 class="h2" id="contact-title">Looking for roles in <em>GIS, remote sensing, survey and environmental consultancy.</em></h2>
       <p class="lead">{F['contact_lead']}</p>
       {F['contact_card']}
       <p class="label more"><a href="#work">Browse the full project archive, experience and toolkit {DOWN}</a></p>
@@ -286,7 +286,7 @@ def build(target='github'):
     <a href="#experience">Experience</a>
     <a href="#contact" data-jump="7">Contact</a>
   </nav>
-  <p class="status label"><i></i>Open to graduate roles</p>
+  <p class="status label"><i></i>Open to work</p>
   <button type="button" class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="index-panel"><span class="label">Index</span><b aria-hidden="true"><i></i><i></i></b></button>
 </header>
 
