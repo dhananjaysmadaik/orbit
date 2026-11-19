@@ -348,3 +348,8 @@ main{position:relative;z-index:2}
 .card-text .points li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;border:1px solid var(--cerulean-ink);transform:rotate(45deg)}
 @media (min-width:860px){.card-text .body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);column-gap:3rem;align-items:start}.card-text .meta{grid-column:1/-1}}
 .creds .creds-sub{margin-top:2.25rem}
+/* publication entry */
+.pub-entry .pub{margin:.9rem 0 1rem}
+.pub-entry .case-links{align-items:center;gap:.6rem 1.1rem}
+.pub-src{font-size:.85rem;color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+.pub-src:hover{color:var(--fg)}
